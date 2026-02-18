@@ -14,12 +14,18 @@ class LoginPage:
         self.page = page
 
     def open(self) -> None:
-        self.page.goto(BASE_URL)
+        for _ in range(2):
+            try:
+                self.page.goto(BASE_URL, timeout=45000, wait_until="domcontentloaded")
+                return
+            except Exception:
+                continue
+        self.page.goto(BASE_URL, timeout=60000, wait_until="load")
 
     def login(self, username: str, password: str) -> None:
         self.page.fill(self.USERNAME_INPUT, username)
         self.page.fill(self.PASSWORD_INPUT, password)
-        self.page.click(self.SUBMIT_BUTTON)
+        self.page.click(self.SUBMIT_BUTTON, no_wait_after=True)
 
     def verify_login_success(self) -> None:
         expect(self.page.locator(self.MY_INFO_LINK)).to_be_visible()

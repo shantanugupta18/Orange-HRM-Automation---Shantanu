@@ -1,11 +1,11 @@
 from pytest_bdd import parsers, then, when
 
-from pages.my_info_page import MyInfoWorkflowPage
+from pages.my_info_page import MyInfoPage, MyInfoWorkflowPage
 
 
 @when("the user navigates to My Info section")
-def go_myinfo(page) -> None:
-    page.click("a[href*='viewMyDetails']")
+def go_myinfo(my_info_page: MyInfoPage) -> None:
+    my_info_page.open_my_info()
 
 
 @then("the requested section should be visible")
