@@ -131,18 +131,32 @@ allure open reports/allure-report
 ```
 
 ## 7.1 GitHub Actions CI/CD
-This repo includes CI/CD workflow at:
+Workflow file:
 - `.github/workflows/ci-cd.yml`
 
 Pipeline behavior:
-- `CI`: runs on `push`, `pull_request`, and `workflow_dispatch`
-- installs Python deps + Playwright Chromium
-- executes pytest with Allure raw result output
-- uploads Allure raw results as workflow artifact
-- builds Allure HTML report
-- deploys report to `gh-pages` on pushes to `main` or `master`
+- triggers on `push`, `pull_request`, and `workflow_dispatch`
+- `test` job:
+  - sets up Python 3.12
+  - installs dependencies from `requirements.txt`
+  - installs Playwright Chromium with OS deps
+  - runs:
+    - `python -m pytest -q -p no:cacheprovider --maxfail=1 --alluredir=reports/allure-results`
+  - uploads `reports/allure-results` as artifact (`allure-results`)
+- `publish-allure-report` job:
+  - downloads `allure-results`
+  - generates Allure HTML report
+  - uploads report artifact (`allure-html-report`)
+  - deploys report to `gh-pages` on `main`/`master` pushes
 
-Required GitHub repository secrets:
+Runtime defaults used in CI when secrets are not provided:
+- `ORANGEHRM_BASE_URL=https://opensource-demo.orangehrmlive.com/web/index.php/auth/login`
+- `ADMIN_USERNAME=Admin`
+- `ADMIN_PASSWORD=admin123`
+- `ESS_USERNAME=Admin`
+- `ESS_PASSWORD=admin123`
+
+Optional GitHub repository secrets (recommended for your own environment):
 - `ORANGEHRM_BASE_URL`
 - `ESS_USERNAME`
 - `ESS_PASSWORD`
@@ -151,10 +165,10 @@ Required GitHub repository secrets:
 
 Setup steps:
 1. Push the workflow file to your GitHub repository.
-2. Add the required secrets in `Settings -> Secrets and variables -> Actions`.
+2. Add secrets in `Settings -> Secrets and variables -> Actions` if you do not want demo defaults.
 3. Enable Actions for the repository.
 4. Trigger the workflow from `Actions` tab or by pushing to `main`/`master`.
-5. After successful publish, open the `gh-pages` branch output for Allure report.
+5. Download artifacts from the run summary or open the deployed `gh-pages` report.
 
 ## 8. Working Flow Design
 ### 8.1 High-Level Flow
