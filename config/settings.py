@@ -18,17 +18,24 @@ class Settings:
 
     @classmethod
     def from_env(cls) -> "Settings":
+        def get_env(name: str, default: str = "") -> str:
+            value = os.getenv(name)
+            if value is None:
+                return default
+            value = value.strip()
+            return value if value else default
+
         return cls(
-            base_url=os.getenv(
+            base_url=get_env(
                 "ORANGEHRM_BASE_URL",
                 "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
             ),
-            username=os.getenv("ESS_USERNAME", ""),
-            password=os.getenv("ESS_PASSWORD", ""),
-            admin_username=os.getenv("ADMIN_USERNAME", ""),
-            admin_password=os.getenv("ADMIN_PASSWORD", ""),
-            headless=os.getenv("HEADLESS", "true").strip().lower() == "true",
-            browser=os.getenv("BROWSER", "chromium").strip().lower(),
+            username=get_env("ESS_USERNAME"),
+            password=get_env("ESS_PASSWORD"),
+            admin_username=get_env("ADMIN_USERNAME"),
+            admin_password=get_env("ADMIN_PASSWORD"),
+            headless=get_env("HEADLESS", "true").lower() == "true",
+            browser=get_env("BROWSER", "chromium").lower(),
         )
 
 
