@@ -130,6 +130,32 @@ allure generate reports/allure-results -o reports/allure-report --clean
 allure open reports/allure-report
 ```
 
+## 7.1 GitHub Actions CI/CD
+This repo includes CI/CD workflow at:
+- `.github/workflows/ci-cd.yml`
+
+Pipeline behavior:
+- `CI`: runs on `push`, `pull_request`, and `workflow_dispatch`
+- installs Python deps + Playwright Chromium
+- executes pytest with Allure raw result output
+- uploads Allure raw results as workflow artifact
+- builds Allure HTML report
+- deploys report to `gh-pages` on pushes to `main` or `master`
+
+Required GitHub repository secrets:
+- `ORANGEHRM_BASE_URL`
+- `ESS_USERNAME`
+- `ESS_PASSWORD`
+- `ADMIN_USERNAME`
+- `ADMIN_PASSWORD`
+
+Setup steps:
+1. Push the workflow file to your GitHub repository.
+2. Add the required secrets in `Settings -> Secrets and variables -> Actions`.
+3. Enable Actions for the repository.
+4. Trigger the workflow from `Actions` tab or by pushing to `main`/`master`.
+5. After successful publish, open the `gh-pages` branch output for Allure report.
+
 ## 8. Working Flow Design
 ### 8.1 High-Level Flow
 1. `tests/*.py` loads scenarios from `features/`.
