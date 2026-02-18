@@ -191,7 +191,7 @@ python -m playwright install chromium
 - Verify `.env` credentials are valid for your OrangeHRM instance.
 - Keep `ORANGEHRM_BASE_URL` pointing to the correct environment.
 
-## 11. Maintenance Notes
+<!-- ## 11. Maintenance Notes
 - Keep feature text and step phrases in sync.
 - Prefer stable selectors in page objects.
-- Add new scenarios in `features/` first, then bind in `steps/`, then implement in `pages/`.
+- Add new scenarios in `features/` first, then bind in `steps/`, then implement in `pages/`. -->
