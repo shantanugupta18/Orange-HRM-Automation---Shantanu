@@ -23,7 +23,14 @@ class MyInfoPage:
         self.page = page
 
     def open_my_info(self) -> None:
-        self.page.locator(self.MY_INFO_LINK).click(no_wait_after=True)
+        if "/pim/" in self.page.url:
+            return
+        link = self.page.locator(self.MY_INFO_LINK)
+        if link.count() > 0:
+            link.first.click(no_wait_after=True)
+            self.page.wait_for_url("**/pim/**", timeout=30000)
+            return
+        self.page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewMyDetails")
         self.page.wait_for_url("**/pim/**", timeout=30000)
 
     def _employee_number(self) -> str:
