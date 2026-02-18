@@ -1,19 +1,28 @@
 from playwright.sync_api import Page, expect
 
+from config.settings import BASE_URL
+
+
 class LoginPage:
+    USERNAME_INPUT = "input[name='username']"
+    PASSWORD_INPUT = "input[name='password']"
+    SUBMIT_BUTTON = "button[type='submit']"
+    MY_INFO_LINK = "role=link[name='My Info']"
+    INVALID_CREDENTIALS = "text=Invalid credentials"
+
     def __init__(self, page: Page):
         self.page = page
 
-    def open(self):
-        self.page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
+    def open(self) -> None:
+        self.page.goto(BASE_URL)
 
-    def login(self, username, password):
-        self.page.fill("input[name='username']", username)
-        self.page.fill("input[name='password']", password)
-        self.page.click("button[type='submit']")
+    def login(self, username: str, password: str) -> None:
+        self.page.fill(self.USERNAME_INPUT, username)
+        self.page.fill(self.PASSWORD_INPUT, password)
+        self.page.click(self.SUBMIT_BUTTON)
 
-    def verify_login_success(self):
-        expect(self.page.locator("role=link[name='My Info']")).to_be_visible()
+    def verify_login_success(self) -> None:
+        expect(self.page.locator(self.MY_INFO_LINK)).to_be_visible()
 
-    def verify_login_failure(self):
-        expect(self.page.locator("text=Invalid credentials")).to_be_visible()
+    def verify_login_failure(self) -> None:
+        expect(self.page.locator(self.INVALID_CREDENTIALS)).to_be_visible()

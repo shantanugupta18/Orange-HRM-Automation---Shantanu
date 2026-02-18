@@ -1,0 +1,51 @@
+# Python cache and artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Packaging/build
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Test and coverage outputs
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Reports and test artifacts
+reports/allure-results/
+reports/allure-report/
+tests/reports/
+playwright-report/
+test-results/
+*.log
+
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+
+# IDE/editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
